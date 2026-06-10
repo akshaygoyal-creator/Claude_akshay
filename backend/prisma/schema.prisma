@@ -1,0 +1,139 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Store {
+  id             String   @id @default(uuid())
+  storeCode      String   @unique
+  name           String
+  latitude       Float
+  longitude      Float
+  address        String
+  city           String
+  geofenceRadius Float    @default(100)
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  employees         Employee[]
+  shifts            Shift[]
+  manpowerPlans     ManpowerPlan[]
+  attendanceRecords AttendanceRecord[]
+}
+
+model Employee {
+  id           String       @id @default(uuid())
+  employeeCode String       @unique
+  name         String
+  email        String       @unique
+  phone        String       @unique
+  passwordHash String
+  type         EmployeeType
+  role         EmployeeRole
+  storeId      String
+  faceDataRef  String?
+  isActive     Boolean      @default(true)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  store             Store              @relation(fields: [storeId], references: [id])
+  attendanceRecords AttendanceRecord[]
+  otpTokens         OtpToken[]
+}
+
+model Shift {
+  id        String   @id @default(uuid())
+  shiftCode String
+  name      String
+  startTime String
+  endTime   String
+  storeId   String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  store             Store              @relation(fields: [storeId], references: [id])
+  manpowerPlans     ManpowerPlan[]
+  attendanceRecords AttendanceRecord[]
+
+  @@unique([shiftCode, storeId])
+}
+
+model ManpowerPlan {
+  id           String       @id @default(uuid())
+  storeId      String
+  shiftId      String
+  role         EmployeeRole
+  plannedCount Int
+  date         String
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  store Store @relation(fields: [storeId], references: [id])
+  shift Shift @relation(fields: [shiftId], references: [id])
+
+  @@unique([storeId, shiftId, role, date])
+}
+
+model AttendanceRecord {
+  id             String           @id @default(uuid())
+  employeeId     String
+  storeId        String
+  shiftId        String
+  date           String
+  checkInTime    DateTime?
+  checkOutTime   DateTime?
+  loginMethod    LoginMethod?
+  checkInLat     Float?
+  checkInLng     Float?
+  status         AttendanceStatus @default(ABSENT)
+  overrideReason String?
+  overriddenBy   String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  employee Employee @relation(fields: [employeeId], references: [id])
+  store    Store    @relation(fields: [storeId], references: [id])
+  shift    Shift    @relation(fields: [shiftId], references: [id])
+
+  @@unique([employeeId, shiftId, date])
+}
+
+model OtpToken {
+  id         String   @id @default(uuid())
+  employeeId String
+  otp        String
+  expiresAt  DateTime
+  used       Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  employee Employee @relation(fields: [employeeId], references: [id])
+}
+
+enum EmployeeType {
+  PART_TIME
+  FULL_TIME
+}
+
+enum EmployeeRole {
+  STORE_MANAGER
+  SHIFT_SUPERVISOR
+  MEAT_TECHNICIAN
+}
+
+enum LoginMethod {
+  FACE_BIOMETRIC
+  OTP
+}
+
+enum AttendanceStatus {
+  PRESENT
+  LATE
+  ABSENT
+  EARLY_EXIT
+}
