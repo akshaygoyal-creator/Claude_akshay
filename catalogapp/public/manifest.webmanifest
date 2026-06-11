@@ -1,0 +1,13 @@
+{
+  "name": "CatalogApp — WhatsApp Catalog for Your Business",
+  "short_name": "CatalogApp",
+  "description": "Upload product photos, let AI fill in the details, and share your catalog on WhatsApp.",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#25D366",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
