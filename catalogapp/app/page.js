@@ -2,16 +2,16 @@ import Link from 'next/link';
 import { LogoMark, Camera, Bag, Chat, Chart, Sparkles, Check } from '../lib/icons';
 
 const FEATURES = [
-  [Camera, 'AI Photo-to-Catalog', 'Upload up to 20 photos. AI writes names, descriptions in English + Hindi and suggests prices.'],
-  [Bag, 'Mini Storefront', 'A fast, mobile-first store page at your own link — with WhatsApp ordering on every product.'],
-  [Chat, 'WhatsApp Sharing', 'Ready-to-send product messages, one-tap catalog links and a printable QR code for your shop.'],
-  [Chart, 'Analytics', 'Storefront views, product views and WhatsApp taps — know exactly what sells.'],
+  [Camera, 'AI Photo-to-Catalog', 'Upload up to 20 photos. AI writes names, descriptions in English + Hindi and suggests prices.', 'bg-violet-soft'],
+  [Bag, 'Mini Storefront', 'A fast, mobile-first store page at your own link — with WhatsApp ordering on every product.', 'bg-coral-soft'],
+  [Chat, 'WhatsApp Sharing', 'Ready-to-send product messages, one-tap catalog links and a printable QR code for your shop.', 'bg-mint'],
+  [Chart, 'Analytics', 'Storefront views, product views and WhatsApp taps — know exactly what sells.', 'bg-butter'],
 ];
 
 const STEPS = [
-  ['Upload photos', 'Drag in product photos straight from your phone gallery.'],
-  ['AI fills the details', 'Names, bilingual descriptions, prices and tags — review and save.'],
-  ['Share on WhatsApp', 'Send your storefront link or product messages to customers.'],
+  ['Upload photos', 'Drag in product photos straight from your phone gallery.', 'bg-coral text-white'],
+  ['AI fills the details', 'Names, bilingual descriptions, prices and tags — review and save.', 'bg-violet text-white'],
+  ['Share on WhatsApp', 'Send your storefront link or product messages to customers.', 'bg-ink text-cream'],
 ];
 
 const PLANS = [
@@ -21,10 +21,23 @@ const PLANS = [
   ['Pro', '₹2,499', ['Unlimited everything', 'Custom domain', 'Priority support · team access'], false],
 ];
 
+function Squiggle({ className }) {
+  return (
+    <svg viewBox="0 0 220 14" fill="none" preserveAspectRatio="none" className={className} aria-hidden="true">
+      <path
+        d="M3 10.5C25 3.5 47 3.5 69 8.5C91 13.5 113 13.5 135 8C157 2.5 179 2.5 201 7.5L217 10.5"
+        stroke="#FF6B5E"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
 export default function Home() {
   return (
     <main>
-      <header className="sticky top-0 z-20 bg-white/80 backdrop-blur-xl border-b border-slate-200/60">
+      <header className="sticky top-0 z-20 bg-cream/85 backdrop-blur-xl border-b-[1.5px] border-ink/10">
         <div className="max-w-5xl mx-auto px-5 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <LogoMark />
@@ -37,57 +50,61 @@ export default function Home() {
       </header>
 
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(60%_50%_at_50%_0%,rgba(16,185,129,0.10),transparent_70%)]" />
+        <div className="pointer-events-none absolute -top-20 -left-24 w-72 h-72 rounded-full bg-violet-soft blur-2xl opacity-70" />
+        <div className="pointer-events-none absolute top-24 -right-20 w-64 h-64 rounded-full bg-coral-soft blur-2xl opacity-70" />
         <div className="relative max-w-5xl mx-auto px-5 pt-20 pb-16 text-center">
-          <span className="badge bg-white border border-slate-200 text-slate-600 shadow-sm">
-            <Sparkles className="w-3.5 h-3.5 text-emerald-500" />
+          <span className="eyebrow">
+            <Sparkles className="w-3.5 h-3.5 text-violet" />
             AI-powered catalogs for WhatsApp sellers
           </span>
-          <h1 className="mt-6 text-[44px] sm:text-6xl font-extrabold tracking-[-0.03em] leading-[1.05]">
+          <h1 className="mt-7 font-display text-[46px] sm:text-[64px] font-semibold tracking-[-0.02em] leading-[1.04]">
             Your WhatsApp catalog,
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">
+            <span className="relative inline-block italic text-violet pb-3">
               ready in 5 minutes
+              <Squiggle className="absolute bottom-0 left-0 w-full h-3" />
             </span>
           </h1>
-          <p className="mt-5 text-lg text-slate-500 max-w-xl mx-auto leading-relaxed">
+          <p className="mt-7 text-lg text-ink/60 max-w-xl mx-auto leading-relaxed font-medium">
             Upload photos, let AI fill in the details in English &amp; Hindi, and share a beautiful storefront on
             WhatsApp. Built for kiranas, home businesses, boutiques and artisans.
           </p>
-          <div className="mt-8 flex items-center justify-center gap-3">
-            <Link href="/onboarding" className="btn-primary !px-7 !py-3 text-[15px]">
+          <div className="mt-9 flex items-center justify-center gap-3">
+            <Link href="/onboarding" className="btn-primary !px-7 !py-3.5 text-[15px]">
               Start Free — no card needed
             </Link>
           </div>
-          <p className="mt-4 text-xs text-slate-400 font-medium tracking-wide">
-            5-MINUTE SETUP &nbsp;·&nbsp; ENGLISH + हिन्दी &nbsp;·&nbsp; FREE FOREVER PLAN
+          <p className="mt-5 text-[11px] text-ink/40 font-extrabold tracking-[0.14em] uppercase">
+            5-minute setup &nbsp;·&nbsp; English + हिन्दी &nbsp;·&nbsp; Free forever plan
           </p>
         </div>
       </section>
 
-      <section className="max-w-5xl mx-auto px-5 pb-20 grid sm:grid-cols-2 gap-4">
-        {FEATURES.map(([Ico, title, desc]) => (
-          <div key={title} className="card p-6 hover:-translate-y-0.5 transition-transform duration-200">
-            <span className="icon-chip">
+      <section className="max-w-5xl mx-auto px-5 pb-20 grid sm:grid-cols-2 gap-5">
+        {FEATURES.map(([Ico, title, desc, tint]) => (
+          <div key={title} className={`card-pop p-7 ${tint} hover:-translate-y-1 transition-transform duration-200`}>
+            <span className="inline-flex w-10 h-10 items-center justify-center rounded-xl bg-white border-[1.5px] border-ink text-ink">
               <Ico className="w-[18px] h-[18px]" />
             </span>
-            <h3 className="mt-4 font-bold tracking-tight">{title}</h3>
-            <p className="mt-1.5 text-sm text-slate-500 leading-relaxed">{desc}</p>
+            <h3 className="mt-4 font-display text-xl font-semibold tracking-tight">{title}</h3>
+            <p className="mt-2 text-sm text-ink/65 leading-relaxed font-medium">{desc}</p>
           </div>
         ))}
       </section>
 
-      <section className="bg-white border-y border-slate-200/60">
+      <section className="border-y-[1.5px] border-ink/10 bg-white">
         <div className="max-w-5xl mx-auto px-5 py-20">
-          <h2 className="text-center text-3xl font-extrabold tracking-tight">How it works</h2>
-          <div className="mt-10 grid sm:grid-cols-3 gap-6">
-            {STEPS.map(([title, desc], i) => (
+          <h2 className="text-center font-display text-4xl font-semibold tracking-tight">How it works</h2>
+          <div className="mt-12 grid sm:grid-cols-3 gap-6">
+            {STEPS.map(([title, desc, chip], i) => (
               <div key={title} className="text-center px-4">
-                <span className="inline-flex w-10 h-10 items-center justify-center rounded-full bg-slate-900 text-white text-sm font-bold shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]">
+                <span
+                  className={`inline-flex w-11 h-11 items-center justify-center rounded-full border-[1.5px] border-ink shadow-[2px_2px_0_#221F35] text-[15px] font-extrabold ${chip}`}
+                >
                   {i + 1}
                 </span>
                 <h3 className="mt-4 font-bold tracking-tight">{title}</h3>
-                <p className="mt-1.5 text-sm text-slate-500 leading-relaxed">{desc}</p>
+                <p className="mt-1.5 text-sm text-ink/55 leading-relaxed font-medium">{desc}</p>
               </div>
             ))}
           </div>
@@ -95,26 +112,25 @@ export default function Home() {
       </section>
 
       <section className="max-w-5xl mx-auto px-5 py-20">
-        <h2 className="text-center text-3xl font-extrabold tracking-tight">Simple pricing</h2>
-        <p className="mt-2 text-center text-sm text-slate-500">Annual plans get 2 months free.</p>
-        <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <h2 className="text-center font-display text-4xl font-semibold tracking-tight">
+          Simple, <span className="italic text-violet">honest</span> pricing
+        </h2>
+        <p className="mt-3 text-center text-sm text-ink/50 font-medium">Annual plans get 2 months free.</p>
+        <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {PLANS.map(([name, price, items, featured]) => (
-            <div
-              key={name}
-              className={`card p-6 ${featured ? 'ring-2 ring-emerald-500 shadow-[0_12px_40px_-12px_rgba(16,185,129,0.35)]' : ''}`}
-            >
+            <div key={name} className={`card-pop p-6 ${featured ? 'bg-violet text-white' : 'bg-white'}`}>
               <div className="flex items-center justify-between">
                 <h3 className="font-bold tracking-tight">{name}</h3>
-                {featured && <span className="badge bg-emerald-50 text-emerald-600">POPULAR</span>}
+                {featured && <span className="badge bg-butter text-ink border-[1.5px] border-ink">POPULAR</span>}
               </div>
               <div className="mt-3 flex items-baseline gap-1">
-                <span className="text-3xl font-extrabold tracking-tight">{price}</span>
-                {name !== 'Free' && <span className="text-sm text-slate-400">/mo</span>}
+                <span className="font-display text-[34px] font-semibold tracking-tight">{price}</span>
+                {name !== 'Free' && <span className={`text-sm ${featured ? 'text-white/60' : 'text-ink/40'}`}>/mo</span>}
               </div>
               <ul className="mt-4 space-y-2">
                 {items.map((it) => (
-                  <li key={it} className="flex items-start gap-2 text-sm text-slate-600">
-                    <Check className="w-4 h-4 mt-0.5 text-emerald-500 shrink-0" />
+                  <li key={it} className={`flex items-start gap-2 text-sm font-medium ${featured ? 'text-white/85' : 'text-ink/65'}`}>
+                    <Check className={`w-4 h-4 mt-0.5 shrink-0 ${featured ? 'text-butter' : 'text-violet'}`} />
                     {it}
                   </li>
                 ))}
@@ -124,13 +140,13 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="border-t border-slate-200/60 py-10">
-        <div className="max-w-5xl mx-auto px-5 flex items-center justify-between text-sm text-slate-400">
+      <footer className="border-t-[1.5px] border-ink/10 py-10">
+        <div className="max-w-5xl mx-auto px-5 flex items-center justify-between text-sm text-ink/40 font-medium">
           <div className="flex items-center gap-2">
             <LogoMark className="w-6 h-6" />
-            <span className="font-semibold text-slate-500">CatalogApp</span>
+            <span className="font-bold text-ink/60">CatalogApp</span>
           </div>
-          <span>Made for Indian SMBs</span>
+          <span>Made with care for Indian SMBs</span>
         </div>
       </footer>
     </main>

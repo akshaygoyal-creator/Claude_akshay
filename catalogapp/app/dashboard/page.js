@@ -43,13 +43,13 @@ export default function Products() {
     load();
   }
 
-  if (products === null) return <p className="text-slate-400 text-sm">Loading…</p>;
+  if (products === null) return <p className="text-ink/40 text-sm">Loading…</p>;
 
   return (
     <div>
       <div className="flex flex-wrap items-center gap-2">
         <div className="relative">
-          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-ink/40" />
           <input className="input !w-52 !pl-9" placeholder="Search products…" value={q} onChange={(e) => setQ(e.target.value)} />
         </div>
         <select className="input !w-auto" value={category} onChange={(e) => setCategory(e.target.value)}>
@@ -89,7 +89,7 @@ export default function Products() {
             <Camera className="w-5 h-5" />
           </span>
           <h2 className="mt-4 font-bold tracking-tight">Upload your first products</h2>
-          <p className="mt-1 text-sm text-slate-500">Add photos and let AI fill in the details.</p>
+          <p className="mt-1 text-sm text-ink/50">Add photos and let AI fill in the details.</p>
           <Link href="/dashboard/upload" className="btn-primary mt-5">Add Products</Link>
         </div>
       ) : (
@@ -101,26 +101,26 @@ export default function Products() {
                 view === 'list' ? 'flex items-center gap-3 p-2.5' : ''
               }`}
             >
-              <div className={view === 'grid' ? 'aspect-square bg-slate-100 relative' : 'w-16 h-16 bg-slate-100 rounded-xl shrink-0 relative overflow-hidden'}>
+              <div className={view === 'grid' ? 'aspect-square bg-ink/5 relative' : 'w-16 h-16 bg-ink/5 rounded-xl shrink-0 relative overflow-hidden'}>
                 {p.image ? (
                   <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-slate-300">
+                  <div className="w-full h-full flex items-center justify-center text-ink/25">
                     <ImageIcon className="w-6 h-6" />
                   </div>
                 )}
                 {!!p.pinned && <span className="absolute top-2 left-2 badge bg-white/90 backdrop-blur text-amber-600 shadow-sm">PINNED</span>}
-                {!p.in_stock && <span className="absolute top-2 right-2 badge bg-slate-900/80 backdrop-blur text-white">OUT OF STOCK</span>}
+                {!p.in_stock && <span className="absolute top-2 right-2 badge bg-ink/80 backdrop-blur text-white">OUT OF STOCK</span>}
               </div>
               <div className={view === 'grid' ? 'p-3.5' : 'flex-1 min-w-0'}>
                 <h3 className="font-semibold text-sm tracking-tight truncate">{p.name}</h3>
-                <p className="text-xs text-slate-400 truncate">{p.category || '—'}</p>
+                <p className="text-xs text-ink/40 truncate">{p.category || '—'}</p>
                 <p className="mt-0.5 text-[15px] font-bold tracking-tight">{p.price != null ? `₹${p.price}` : '—'}</p>
                 <div className="mt-1.5 flex flex-wrap gap-x-2.5 gap-y-1 text-xs font-medium">
-                  <button className="text-slate-600 hover:text-slate-900" onClick={() => setEditing(p)}>Edit</button>
-                  <button className="text-slate-400 hover:text-slate-700" onClick={() => patch(p.id, { in_stock: !p.in_stock })}>{p.in_stock ? 'Mark out' : 'Mark in'}</button>
-                  <button className="text-slate-400 hover:text-slate-700" onClick={() => patch(p.id, { pinned: !p.pinned })}>{p.pinned ? 'Unpin' : 'Pin'}</button>
-                  <button className="text-slate-400 hover:text-slate-700" onClick={() => act(p.id, 'POST')}>Duplicate</button>
+                  <button className="text-ink/60 hover:text-ink" onClick={() => setEditing(p)}>Edit</button>
+                  <button className="text-ink/40 hover:text-ink/70" onClick={() => patch(p.id, { in_stock: !p.in_stock })}>{p.in_stock ? 'Mark out' : 'Mark in'}</button>
+                  <button className="text-ink/40 hover:text-ink/70" onClick={() => patch(p.id, { pinned: !p.pinned })}>{p.pinned ? 'Unpin' : 'Pin'}</button>
+                  <button className="text-ink/40 hover:text-ink/70" onClick={() => act(p.id, 'POST')}>Duplicate</button>
                   <button className="text-red-400 hover:text-red-600" onClick={() => confirm(`Delete "${p.name}"?`) && act(p.id, 'DELETE')}>Delete</button>
                 </div>
               </div>
@@ -130,7 +130,7 @@ export default function Products() {
       )}
 
       {editing && (
-        <div className="fixed inset-0 bg-slate-950/50 backdrop-blur-sm z-30 flex items-center justify-center p-4" onClick={() => setEditing(null)}>
+        <div className="fixed inset-0 bg-ink/50 backdrop-blur-sm z-30 flex items-center justify-center p-4" onClick={() => setEditing(null)}>
           <div className="card w-full max-w-md p-6 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <h2 className="font-bold tracking-tight mb-4">Edit product</h2>
             <ProductForm

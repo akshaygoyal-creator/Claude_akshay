@@ -15,7 +15,7 @@ export default function Share() {
     fetch('/api/products').then((r) => r.json()).then((d) => setProducts(d.products || []));
   }, []);
 
-  if (!seller) return <p className="text-slate-400 text-sm">Loading…</p>;
+  if (!seller) return <p className="text-ink/40 text-sm">Loading…</p>;
 
   const storeUrl = `${window.location.origin}/store/${seller.slug}`;
   const catalogMsg =
@@ -47,24 +47,24 @@ export default function Share() {
   }
 
   if (!seller.slug)
-    return <p className="text-sm text-slate-500">Finish your business profile in Settings to get your storefront link.</p>;
+    return <p className="text-sm text-ink/50">Finish your business profile in Settings to get your storefront link.</p>;
 
   const CopyBtn = ({ k, text, ids }) => (
     <button className="btn-secondary" onClick={() => copy(text, k, ids)}>
-      {copied === k ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
+      {copied === k ? <Check className="w-4 h-4 text-wa" /> : <Copy className="w-4 h-4" />}
       {copied === k ? 'Copied' : 'Copy'}
     </button>
   );
 
   return (
     <div className="space-y-5 max-w-2xl">
-      <div className="inline-flex gap-1 p-1 bg-slate-100 rounded-full">
+      <div className="inline-flex gap-1 p-1 bg-ink/5 rounded-full">
         {[['en', 'English'], ['hi', 'हिन्दी']].map(([v, label]) => (
           <button
             key={v}
             onClick={() => setLang(v)}
             className={`rounded-full px-4 py-1.5 text-[13px] font-semibold transition ${
-              lang === v ? 'bg-white shadow-sm text-slate-900' : 'text-slate-500'
+              lang === v ? 'bg-white shadow-sm text-ink' : 'text-ink/50'
             }`}
           >
             {label}
@@ -77,11 +77,11 @@ export default function Share() {
           <span className="icon-chip !w-8 !h-8"><Chat className="w-4 h-4" /></span>
           Share catalog link
         </h2>
-        <p className="mt-3 text-sm font-medium bg-slate-50 border border-slate-100 rounded-xl p-3 break-all text-slate-600">{storeUrl}</p>
+        <p className="mt-3 text-sm font-medium bg-cream border border-ink/10 rounded-xl p-3 break-all text-ink/60">{storeUrl}</p>
         <div className="mt-3.5 flex flex-wrap gap-2">
           <CopyBtn k="link" text={storeUrl} />
           <button className="btn-secondary" onClick={() => copy(catalogMsg, 'msg')}>
-            {copied === 'msg' ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
+            {copied === 'msg' ? <Check className="w-4 h-4 text-wa" /> : <Copy className="w-4 h-4" />}
             {copied === 'msg' ? 'Copied' : 'Copy message'}
           </button>
           <a className="btn-wa" target="_blank" href={`https://wa.me/?text=${encodeURIComponent(catalogMsg)}`}>
@@ -96,26 +96,26 @@ export default function Share() {
           <span className="icon-chip !w-8 !h-8"><Bag className="w-4 h-4" /></span>
           Product message generator
         </h2>
-        <p className="mt-1.5 text-xs text-slate-400">Select products to build a ready-to-send WhatsApp message.</p>
+        <p className="mt-1.5 text-xs text-ink/40">Select products to build a ready-to-send WhatsApp message.</p>
         <div className="mt-3 max-h-56 overflow-y-auto space-y-0.5">
           {products.map((p) => (
-            <label key={p.id} className="flex items-center gap-2.5 text-sm p-2 rounded-xl hover:bg-slate-50 cursor-pointer">
+            <label key={p.id} className="flex items-center gap-2.5 text-sm p-2 rounded-xl hover:bg-cream cursor-pointer">
               <input
                 type="checkbox"
-                className="accent-emerald-500"
+                className="accent-violet"
                 checked={selected.includes(p.id)}
                 onChange={(e) => setSelected(e.target.checked ? [...selected, p.id] : selected.filter((i) => i !== p.id))}
               />
               {p.image && <img src={p.image} alt="" className="w-8 h-8 rounded-lg object-cover" />}
               <span className="truncate font-medium">{p.name}</span>
-              <span className="ml-auto text-slate-400 font-medium">{p.price != null ? `₹${p.price}` : ''}</span>
+              <span className="ml-auto text-ink/40 font-medium">{p.price != null ? `₹${p.price}` : ''}</span>
             </label>
           ))}
-          {products.length === 0 && <p className="text-sm text-slate-400">No products yet.</p>}
+          {products.length === 0 && <p className="text-sm text-ink/40">No products yet.</p>}
         </div>
         {selected.length > 0 && (
           <>
-            <pre className="mt-3 text-xs bg-slate-50 border border-slate-100 rounded-xl p-3.5 whitespace-pre-wrap font-sans text-slate-600">{productMsg()}</pre>
+            <pre className="mt-3 text-xs bg-cream border border-ink/10 rounded-xl p-3.5 whitespace-pre-wrap font-sans text-ink/60">{productMsg()}</pre>
             <div className="mt-3 flex gap-2">
               <CopyBtn k="pmsg" text={productMsg()} ids={selected} />
               <a className="btn-wa" target="_blank" href={`https://wa.me/?text=${encodeURIComponent(productMsg())}`}>
@@ -132,9 +132,9 @@ export default function Share() {
           <span className="icon-chip !w-8 !h-8"><Qr className="w-4 h-4" /></span>
           QR code
         </h2>
-        <p className="mt-1.5 text-xs text-slate-400">Print it and display it at your shop — customers scan to open your catalog.</p>
+        <p className="mt-1.5 text-xs text-ink/40">Print it and display it at your shop — customers scan to open your catalog.</p>
         <div className="mt-4 flex items-center gap-5">
-          <img src="/api/qr" alt="Storefront QR code" className="w-32 h-32 border border-slate-200 rounded-2xl p-1.5 bg-white" />
+          <img src="/api/qr" alt="Storefront QR code" className="w-32 h-32 border border-ink/10 rounded-2xl p-1.5 bg-white" />
           <a href="/api/qr" download className="btn-secondary">
             <Download className="w-4 h-4" />
             Download PNG (1000×1000)

@@ -27,7 +27,7 @@ export default function DashboardLayout({ children }) {
 
   return (
     <div className="min-h-screen">
-      <header className="bg-white/80 backdrop-blur-xl border-b border-slate-200/60 sticky top-0 z-20">
+      <header className="bg-cream/85 backdrop-blur-xl border-b border-ink/10 sticky top-0 z-20">
         <div className="max-w-5xl mx-auto px-5 h-14 flex items-center justify-between gap-2">
           <Link href="/dashboard" className="flex items-center gap-2">
             <LogoMark className="w-7 h-7" />
@@ -61,7 +61,7 @@ export default function DashboardLayout({ children }) {
                 key={href}
                 href={href}
                 className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[13px] font-semibold whitespace-nowrap transition ${
-                  active ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100'
+                  active ? 'bg-ink text-white shadow-sm' : 'text-ink/50 hover:text-ink hover:bg-ink/5'
                 }`}
               >
                 <Ico className="w-3.5 h-3.5" />

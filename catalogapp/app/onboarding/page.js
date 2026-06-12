@@ -59,7 +59,7 @@ export default function Onboarding() {
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center px-4 bg-[radial-gradient(60%_50%_at_50%_0%,rgba(16,185,129,0.08),transparent_70%)]">
+    <main className="min-h-screen flex items-center justify-center px-4 bg-[radial-gradient(60%_50%_at_50%_0%,rgba(107,78,255,0.10),transparent_70%)]">
       <div className="card w-full max-w-md p-8">
         <div className="flex flex-col items-center">
           <LogoMark className="w-12 h-12" />
@@ -68,7 +68,7 @@ export default function Onboarding() {
             {STEPS.map((s) => (
               <span
                 key={s}
-                className={`h-1.5 rounded-full transition-all ${s === step ? 'w-6 bg-emerald-500' : 'w-1.5 bg-slate-200'}`}
+                className={`h-1.5 rounded-full transition-all ${s === step ? 'w-6 bg-violet' : 'w-1.5 bg-ink/10'}`}
               />
             ))}
           </div>
@@ -86,7 +86,7 @@ export default function Onboarding() {
 
         {step === 'otp' && (
           <form onSubmit={verify} className="mt-7 space-y-4">
-            <p className="text-sm text-slate-500 text-center">Enter the 6-digit OTP sent to <b className="text-slate-700">{phone}</b></p>
+            <p className="text-sm text-ink/50 text-center">Enter the 6-digit OTP sent to <b className="text-ink/70">{phone}</b></p>
             {hint && <p className="text-xs text-amber-700 bg-amber-50 border border-amber-100 rounded-xl p-2.5 text-center">{hint}</p>}
             <input className="input text-center tracking-[0.5em] text-lg font-bold" maxLength={6} value={code} onChange={(e) => setCode(e.target.value)} required />
             <button className="btn-primary w-full" disabled={busy}>{busy ? 'Verifying…' : 'Verify & Continue'}</button>
@@ -95,21 +95,21 @@ export default function Onboarding() {
 
         {step === 'profile' && (
           <form onSubmit={saveProfile} className="mt-7 space-y-3.5">
-            <p className="text-sm text-slate-500 text-center">Tell us about your business</p>
+            <p className="text-sm text-ink/50 text-center">Tell us about your business</p>
             <input className="input" placeholder="Business name *" value={profile.business_name} onChange={(e) => setProfile({ ...profile, business_name: e.target.value })} required />
             <select className="input" value={profile.category} onChange={(e) => setProfile({ ...profile, category: e.target.value })}>
               {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
             </select>
             <input className="input" placeholder="WhatsApp number for orders *" value={profile.whatsapp} onChange={(e) => setProfile({ ...profile, whatsapp: e.target.value })} required />
             <input className="input" placeholder="City" value={profile.city} onChange={(e) => setProfile({ ...profile, city: e.target.value })} />
-            <div className="flex gap-2 p-1 bg-slate-100 rounded-full">
+            <div className="flex gap-2 p-1 bg-ink/5 rounded-full">
               {[['en', 'English'], ['hi', 'हिन्दी']].map(([v, label]) => (
                 <button
                   type="button"
                   key={v}
                   onClick={() => setProfile({ ...profile, language: v })}
                   className={`flex-1 rounded-full py-2 text-sm font-semibold transition ${
-                    profile.language === v ? 'bg-white shadow-sm text-slate-900' : 'text-slate-500'
+                    profile.language === v ? 'bg-white shadow-sm text-ink' : 'text-ink/50'
                   }`}
                 >
                   {label}

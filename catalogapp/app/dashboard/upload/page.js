@@ -140,13 +140,13 @@ export default function Upload() {
 
   return (
     <div>
-      <div className="inline-flex gap-1 p-1 bg-slate-100 rounded-full">
+      <div className="inline-flex gap-1 p-1 bg-ink/5 rounded-full">
         {TABS.map(([v, label, Ico]) => (
           <button
             key={v}
             onClick={() => setTab(v)}
             className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-[13px] font-semibold transition ${
-              tab === v ? 'bg-white shadow-sm text-slate-900' : 'text-slate-500 hover:text-slate-800'
+              tab === v ? 'bg-white shadow-sm text-ink' : 'text-ink/50 hover:text-ink'
             }`}
           >
             <Ico className="w-3.5 h-3.5" />
@@ -160,7 +160,7 @@ export default function Upload() {
       {tab === 'photos' && (
         <div className="mt-5">
           <div
-            className="card border-2 border-dashed !border-slate-300 !shadow-none p-12 text-center cursor-pointer transition hover:!border-emerald-400 hover:bg-emerald-50/30"
+            className="card border-2 border-dashed !border-ink/20 !shadow-none p-12 text-center cursor-pointer transition hover:!border-violet hover:bg-violet-soft/40"
             onClick={() => fileRef.current.click()}
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => {
@@ -172,7 +172,7 @@ export default function Upload() {
               <Camera className="w-5 h-5" />
             </span>
             <p className="mt-4 font-bold tracking-tight">Drag &amp; drop or tap to select photos</p>
-            <p className="mt-1 text-xs text-slate-400">
+            <p className="mt-1 text-xs text-ink/40">
               Up to 20 photos · JPG, PNG, WEBP, HEIC · max 10MB each — AI fills in the details
             </p>
             <input ref={fileRef} type="file" accept="image/*" multiple hidden onChange={(e) => handleFiles(e.target.files)} />
@@ -185,8 +185,8 @@ export default function Upload() {
                   <div className="flex items-center gap-4">
                     <img src={card.image} alt="" className="w-16 h-16 object-cover rounded-xl" />
                     <div className="flex-1">
-                      <p className="flex items-center gap-1.5 text-sm font-semibold text-slate-700">
-                        <Sparkles className="w-4 h-4 text-emerald-500" />
+                      <p className="flex items-center gap-1.5 text-sm font-semibold text-ink/70">
+                        <Sparkles className="w-4 h-4 text-violet" />
                         AI is reading this photo…
                       </p>
                       <div className="mt-2 space-y-1.5">
@@ -208,7 +208,7 @@ export default function Upload() {
                 {card.status === 'saved' && (
                   <div className="flex items-center gap-4">
                     <img src={card.image} alt="" className="w-16 h-16 object-cover rounded-xl" />
-                    <p className="flex items-center gap-1.5 text-sm font-semibold text-emerald-600">
+                    <p className="flex items-center gap-1.5 text-sm font-semibold text-wa-dark">
                       <Check className="w-4 h-4" />
                       Saved to catalog
                     </p>
@@ -241,9 +241,9 @@ export default function Upload() {
 
       {tab === 'csv' && (
         <div className="card mt-5 p-6 max-w-lg">
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-ink/50">
             Upload a CSV with header columns:{' '}
-            <code className="bg-slate-100 px-1.5 py-0.5 rounded-md text-xs text-slate-700">name, price, description, category, image url</code>
+            <code className="bg-ink/5 px-1.5 py-0.5 rounded-md text-xs text-ink/70">name, price, description, category, image url</code>
           </p>
           <input ref={csvRef} type="file" accept=".csv" className="mt-4 text-sm" onChange={(e) => e.target.files[0] && importCsv(e.target.files[0])} />
         </div>

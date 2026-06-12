@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Check } from '../../../lib/icons';
 
-const COLORS = ['#10b981', '#0d9488', '#e11d48', '#7c3aed', '#2563eb', '#ea580c', '#ca8a04', '#1f2937'];
+const COLORS = ['#6B4EFF', '#FF6B5E', '#10b981', '#0d9488', '#2563eb', '#ea580c', '#ca8a04', '#221F35'];
 
 export default function Settings() {
   const [s, setS] = useState(null);
@@ -13,7 +13,7 @@ export default function Settings() {
     fetch('/api/seller').then((r) => r.json()).then((d) => setS(d.seller));
   }, []);
 
-  if (!s) return <p className="text-slate-400 text-sm">Loading…</p>;
+  if (!s) return <p className="text-ink/40 text-sm">Loading…</p>;
   const set = (k) => (e) => setS({ ...s, [k]: e.target.value });
 
   async function save(e) {
@@ -87,14 +87,14 @@ export default function Settings() {
         </div>
       </div>
 
-      <label className="flex items-center gap-2.5 text-[13px] font-medium text-slate-600">
-        <input type="checkbox" className="accent-emerald-500" checked={!!s.show_prices} onChange={(e) => setS({ ...s, show_prices: e.target.checked ? 1 : 0 })} />
+      <label className="flex items-center gap-2.5 text-[13px] font-medium text-ink/60">
+        <input type="checkbox" className="accent-violet" checked={!!s.show_prices} onChange={(e) => setS({ ...s, show_prices: e.target.checked ? 1 : 0 })} />
         Show prices publicly on storefront
       </label>
 
       {s.slug && (
-        <p className="text-xs text-slate-400 bg-slate-50 border border-slate-100 rounded-xl p-2.5">
-          Your store: <span className="font-mono text-slate-600">/store/{s.slug}</span> · Plan: <b className="capitalize text-slate-600">{s.plan}</b>
+        <p className="text-xs text-ink/40 bg-cream border border-ink/10 rounded-xl p-2.5">
+          Your store: <span className="font-mono text-ink/60">/store/{s.slug}</span> · Plan: <b className="capitalize text-ink/60">{s.plan}</b>
         </p>
       )}
 

@@ -29,7 +29,7 @@ export default function ProductForm({ initial = {}, onSave, onCancel, saveLabel 
 
   return (
     <form onSubmit={submit} className="space-y-3">
-      {p.image && <img src={p.image} alt="" className="w-20 h-20 object-cover rounded-xl border border-slate-100" />}
+      {p.image && <img src={p.image} alt="" className="w-20 h-20 object-cover rounded-xl border border-ink/10" />}
       <input className="input" placeholder="Product name *" value={p.name} onChange={set('name')} required />
       <div className="grid grid-cols-2 gap-3">
         <input className="input" placeholder="Category" value={p.category} onChange={set('category')} />

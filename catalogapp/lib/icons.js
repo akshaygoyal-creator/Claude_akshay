@@ -191,7 +191,7 @@ export const WaGlyph = ({ className = 'w-4 h-4' }) => (
 export function LogoMark({ className = 'w-8 h-8' }) {
   return (
     <span
-      className={`${className} inline-flex items-center justify-center rounded-xl bg-gradient-to-b from-emerald-500 to-emerald-600 text-white shadow-[inset_0_1px_0_rgba(255,255,255,.3),0_2px_6px_-1px_rgba(16,185,129,.5)]`}
+      className={`${className} inline-flex items-center justify-center rounded-xl bg-coral text-white border-[1.5px] border-ink shadow-[2px_2px_0_#221F35]`}
     >
       <Box className="w-[55%] h-[55%]" strokeWidth={2} />
     </span>

@@ -3,48 +3,62 @@
 @tailwind utilities;
 
 body {
-  @apply bg-[#f6f7f6] text-slate-900 antialiased;
+  @apply bg-cream text-ink antialiased;
 }
 
-/* Pill buttons with a soft top-light gloss */
+/* Pill buttons — flat ink fill, playful coral offset shadow on hover */
 .btn {
-  @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold tracking-tight transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed;
+  @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold tracking-tight transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed;
 }
 .btn-primary {
-  @apply btn text-white bg-gradient-to-b from-slate-800 to-slate-950 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_2px_8px_-2px_rgba(15,23,42,0.45)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_4px_14px_-4px_rgba(15,23,42,0.55)] hover:-translate-y-px active:translate-y-0;
+  @apply btn bg-ink text-cream hover:-translate-y-0.5 hover:shadow-[3px_3px_0_#FF6B5E] active:translate-y-0 active:shadow-none;
+}
+.btn-accent {
+  @apply btn bg-violet text-white hover:-translate-y-0.5 hover:shadow-[3px_3px_0_#221F35] active:translate-y-0 active:shadow-none;
 }
 .btn-wa {
-  @apply btn text-white bg-gradient-to-b from-emerald-500 to-emerald-600 shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_2px_8px_-2px_rgba(16,185,129,0.55)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_4px_14px_-4px_rgba(16,185,129,0.65)] hover:-translate-y-px active:translate-y-0;
+  @apply btn bg-wa text-white hover:-translate-y-0.5 hover:shadow-[3px_3px_0_#221F35] active:translate-y-0 active:shadow-none;
 }
 .btn-secondary {
-  @apply btn bg-white text-slate-700 border border-slate-200 shadow-sm hover:border-slate-300 hover:text-slate-900;
+  @apply btn bg-white text-ink border-[1.5px] border-ink/15 hover:border-ink hover:-translate-y-0.5 active:translate-y-0;
 }
 .btn-ghost {
-  @apply btn text-slate-500 hover:text-slate-900 hover:bg-slate-100;
+  @apply btn text-ink/50 hover:text-ink hover:bg-ink/5;
 }
 
 .input {
-  @apply w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm placeholder:text-slate-400 shadow-sm transition focus:outline-none focus:border-slate-400 focus:ring-4 focus:ring-slate-900/5;
+  @apply w-full rounded-xl border-[1.5px] border-ink/15 bg-white px-3.5 py-2.5 text-sm placeholder:text-ink/35 transition focus:outline-none focus:border-violet focus:ring-4 focus:ring-violet/15;
 }
 
+/* Soft card for app surfaces */
 .card {
-  @apply bg-white rounded-2xl border border-slate-200/70 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_12px_32px_-16px_rgba(15,23,42,0.10)];
+  @apply bg-white rounded-2xl border-[1.5px] border-ink/10 shadow-[0_2px_0_rgba(34,31,53,0.05)];
+}
+
+/* Sticker card for marketing moments — ink border + hard offset shadow.
+   Background is set by the caller (white or a pastel tint). */
+.card-pop {
+  @apply rounded-2xl border-[1.5px] border-ink shadow-[5px_5px_0_rgba(34,31,53,1)];
 }
 
 .badge {
-  @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-semibold tracking-wide;
+  @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-bold tracking-wide;
+}
+
+.eyebrow {
+  @apply inline-flex items-center gap-1.5 rounded-full bg-violet-soft text-ink border-[1.5px] border-ink/10 px-3.5 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.12em];
 }
 
 .label {
-  @apply block text-[13px] font-medium text-slate-600;
+  @apply block text-[13px] font-semibold text-ink/60;
 }
 
 .section-title {
-  @apply flex items-center gap-2 text-[15px] font-bold tracking-tight;
+  @apply flex items-center gap-2.5 text-[15px] font-extrabold tracking-tight;
 }
 
 .icon-chip {
-  @apply inline-flex w-9 h-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600;
+  @apply inline-flex w-9 h-9 items-center justify-center rounded-xl bg-violet-soft text-violet border-[1.5px] border-ink/10;
 }
 
 /* Shimmer for AI loading states */
@@ -53,7 +67,7 @@ body {
   100% { background-position: 400px 0; }
 }
 .shimmer {
-  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 37%, #f1f5f9 63%);
+  background: linear-gradient(90deg, #f1ede4 25%, #e6e0d2 37%, #f1ede4 63%);
   background-size: 800px 100%;
   animation: shimmer 1.4s ease-in-out infinite;
 }
