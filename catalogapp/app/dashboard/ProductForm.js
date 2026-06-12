@@ -29,7 +29,7 @@ export default function ProductForm({ initial = {}, onSave, onCancel, saveLabel 
 
   return (
     <form onSubmit={submit} className="space-y-3">
-      {p.image && <img src={p.image} alt="" className="w-24 h-24 object-cover rounded-lg" />}
+      {p.image && <img src={p.image} alt="" className="w-20 h-20 object-cover rounded-xl border border-slate-100" />}
       <input className="input" placeholder="Product name *" value={p.name} onChange={set('name')} required />
       <div className="grid grid-cols-2 gap-3">
         <input className="input" placeholder="Category" value={p.category} onChange={set('category')} />
@@ -38,7 +38,7 @@ export default function ProductForm({ initial = {}, onSave, onCancel, saveLabel 
       <textarea className="input" rows={2} placeholder="Description (English)" value={p.description_en} onChange={set('description_en')} />
       <textarea className="input" rows={2} placeholder="विवरण (हिन्दी)" value={p.description_hi} onChange={set('description_hi')} />
       <input className="input" placeholder="Tags (comma separated)" value={p.tags} onChange={set('tags')} />
-      <div className="flex gap-2 justify-end">
+      <div className="flex gap-2 justify-end pt-1">
         {onCancel && (
           <button type="button" className="btn-secondary" onClick={onCancel}>
             Cancel

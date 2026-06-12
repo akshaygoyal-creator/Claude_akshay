@@ -1,8 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { Check } from '../../../lib/icons';
 
-const COLORS = ['#25D366', '#128C7E', '#E11D48', '#7C3AED', '#2563EB', '#EA580C', '#0D9488', '#1F2937'];
+const COLORS = ['#10b981', '#0d9488', '#e11d48', '#7c3aed', '#2563eb', '#ea580c', '#ca8a04', '#1f2937'];
 
 export default function Settings() {
   const [s, setS] = useState(null);
@@ -12,7 +13,7 @@ export default function Settings() {
     fetch('/api/seller').then((r) => r.json()).then((d) => setS(d.seller));
   }, []);
 
-  if (!s) return <p className="text-gray-400">Loading…</p>;
+  if (!s) return <p className="text-slate-400 text-sm">Loading…</p>;
   const set = (k) => (e) => setS({ ...s, [k]: e.target.value });
 
   async function save(e) {
@@ -40,62 +41,64 @@ export default function Settings() {
   }
 
   return (
-    <form onSubmit={save} className="card max-w-lg p-6 space-y-4">
-      <h1 className="font-bold text-lg">Storefront settings</h1>
-      <label className="block text-sm font-medium">
+    <form onSubmit={save} className="card max-w-lg p-7 space-y-4">
+      <h1 className="font-bold tracking-tight text-lg">Storefront settings</h1>
+      <label className="label">
         Business name
-        <input className="input mt-1" value={s.business_name} onChange={set('business_name')} required />
+        <input className="input mt-1.5" value={s.business_name} onChange={set('business_name')} required />
       </label>
-      <label className="block text-sm font-medium">
+      <label className="label">
         WhatsApp number for orders
-        <input className="input mt-1" value={s.whatsapp} onChange={set('whatsapp')} required />
+        <input className="input mt-1.5" value={s.whatsapp} onChange={set('whatsapp')} required />
       </label>
       <div className="grid grid-cols-2 gap-3">
-        <label className="block text-sm font-medium">
+        <label className="label">
           Category
-          <input className="input mt-1" value={s.category} onChange={set('category')} />
+          <input className="input mt-1.5" value={s.category} onChange={set('category')} />
         </label>
-        <label className="block text-sm font-medium">
+        <label className="label">
           City
-          <input className="input mt-1" value={s.city} onChange={set('city')} />
+          <input className="input mt-1.5" value={s.city} onChange={set('city')} />
         </label>
       </div>
-      <label className="block text-sm font-medium">
+      <label className="label">
         Business description
-        <textarea className="input mt-1" rows={2} value={s.description} onChange={set('description')} />
+        <textarea className="input mt-1.5" rows={2} value={s.description} onChange={set('description')} />
       </label>
-      <label className="block text-sm font-medium">
+      <label className="label">
         Hours (e.g. Mon–Sat 9am–8pm)
-        <input className="input mt-1" value={s.hours} onChange={set('hours')} />
+        <input className="input mt-1.5" value={s.hours} onChange={set('hours')} />
       </label>
 
       <div>
-        <p className="text-sm font-medium">Accent color</p>
+        <p className="label">Accent color</p>
         <div className="mt-2 flex gap-2">
           {COLORS.map((c) => (
             <button
               key={c}
               type="button"
-              className={`w-8 h-8 rounded-full border-2 ${s.accent_color === c ? 'border-gray-900 scale-110' : 'border-transparent'}`}
+              className="w-8 h-8 rounded-full flex items-center justify-center text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.3)] transition hover:scale-105"
               style={{ background: c }}
               onClick={() => setS({ ...s, accent_color: c })}
-            />
+            >
+              {s.accent_color === c && <Check className="w-4 h-4" strokeWidth={2.5} />}
+            </button>
           ))}
         </div>
       </div>
 
-      <label className="flex items-center gap-2 text-sm font-medium">
-        <input type="checkbox" checked={!!s.show_prices} onChange={(e) => setS({ ...s, show_prices: e.target.checked ? 1 : 0 })} />
+      <label className="flex items-center gap-2.5 text-[13px] font-medium text-slate-600">
+        <input type="checkbox" className="accent-emerald-500" checked={!!s.show_prices} onChange={(e) => setS({ ...s, show_prices: e.target.checked ? 1 : 0 })} />
         Show prices publicly on storefront
       </label>
 
       {s.slug && (
-        <p className="text-xs text-gray-500">
-          Your store: <span className="font-mono">/store/{s.slug}</span> · Plan: <b className="capitalize">{s.plan}</b>
+        <p className="text-xs text-slate-400 bg-slate-50 border border-slate-100 rounded-xl p-2.5">
+          Your store: <span className="font-mono text-slate-600">/store/{s.slug}</span> · Plan: <b className="capitalize text-slate-600">{s.plan}</b>
         </p>
       )}
 
-      <button className="btn-primary">{saved ? '✓ Saved' : 'Save settings'}</button>
+      <button className="btn-primary">{saved ? 'Saved ✓' : 'Save settings'}</button>
     </form>
   );
 }

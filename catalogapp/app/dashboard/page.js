@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import ProductForm from './ProductForm';
+import { Plus, Search, Grid, ListIcon, Camera, ImageIcon } from '../../lib/icons';
 
 export default function Products() {
   const [products, setProducts] = useState(null);
@@ -42,12 +43,15 @@ export default function Products() {
     load();
   }
 
-  if (products === null) return <p className="text-gray-400">Loading…</p>;
+  if (products === null) return <p className="text-slate-400 text-sm">Loading…</p>;
 
   return (
     <div>
       <div className="flex flex-wrap items-center gap-2">
-        <input className="input !w-48" placeholder="Search products…" value={q} onChange={(e) => setQ(e.target.value)} />
+        <div className="relative">
+          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+          <input className="input !w-52 !pl-9" placeholder="Search products…" value={q} onChange={(e) => setQ(e.target.value)} />
+        </div>
         <select className="input !w-auto" value={category} onChange={(e) => setCategory(e.target.value)}>
           <option value="">All categories</option>
           {categories.map((c) => <option key={c}>{c}</option>)}
@@ -64,44 +68,60 @@ export default function Products() {
           <option value="name">Name</option>
           <option value="shared">Most shared</option>
         </select>
-        <button className="btn-secondary ml-auto" onClick={() => setView(view === 'grid' ? 'list' : 'grid')}>
-          {view === 'grid' ? '☰ List' : '▦ Grid'}
+        <button className="btn-secondary !p-2.5 ml-auto" title="Toggle view" onClick={() => setView(view === 'grid' ? 'list' : 'grid')}>
+          {view === 'grid' ? <ListIcon className="w-4 h-4" /> : <Grid className="w-4 h-4" />}
         </button>
-        <Link href="/dashboard/upload" className="btn-primary">+ Add Products</Link>
+        <Link href="/dashboard/upload" className="btn-primary">
+          <Plus className="w-4 h-4" />
+          Add Products
+        </Link>
       </div>
 
       {error && (
-        <p className="mt-3 text-sm text-red-600 bg-red-50 rounded p-2" onClick={() => setError('')}>
+        <p className="mt-3 text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl p-2.5 cursor-pointer" onClick={() => setError('')}>
           {error}
         </p>
       )}
 
       {products.length === 0 ? (
-        <div className="card mt-6 p-12 text-center">
-          <p className="text-4xl">📸</p>
-          <h2 className="mt-2 font-bold">Upload your first products</h2>
-          <p className="mt-1 text-sm text-gray-500">Add photos and let AI fill in the details.</p>
-          <Link href="/dashboard/upload" className="btn-primary mt-4">Add Products</Link>
+        <div className="card mt-6 p-14 text-center">
+          <span className="icon-chip !w-12 !h-12 mx-auto">
+            <Camera className="w-5 h-5" />
+          </span>
+          <h2 className="mt-4 font-bold tracking-tight">Upload your first products</h2>
+          <p className="mt-1 text-sm text-slate-500">Add photos and let AI fill in the details.</p>
+          <Link href="/dashboard/upload" className="btn-primary mt-5">Add Products</Link>
         </div>
       ) : (
-        <div className={view === 'grid' ? 'mt-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4' : 'mt-4 space-y-2'}>
+        <div className={view === 'grid' ? 'mt-5 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4' : 'mt-5 space-y-2'}>
           {products.map((p) => (
-            <div key={p.id} className={`card overflow-hidden ${view === 'list' ? 'flex items-center gap-3 p-2' : ''}`}>
-              <div className={view === 'grid' ? 'aspect-square bg-gray-100 relative' : 'w-16 h-16 bg-gray-100 rounded-lg shrink-0 relative'}>
-                {p.image ? <img src={p.image} alt={p.name} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-2xl">🛍️</div>}
-                {!!p.pinned && <span className="absolute top-1 left-1 badge bg-amber-100 text-amber-700">📌</span>}
-                {!p.in_stock && <span className="absolute top-1 right-1 badge bg-gray-800/80 text-white">Out of stock</span>}
+            <div
+              key={p.id}
+              className={`card overflow-hidden hover:shadow-[0_2px_4px_rgba(15,23,42,0.06),0_16px_40px_-16px_rgba(15,23,42,0.16)] transition-shadow ${
+                view === 'list' ? 'flex items-center gap-3 p-2.5' : ''
+              }`}
+            >
+              <div className={view === 'grid' ? 'aspect-square bg-slate-100 relative' : 'w-16 h-16 bg-slate-100 rounded-xl shrink-0 relative overflow-hidden'}>
+                {p.image ? (
+                  <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-slate-300">
+                    <ImageIcon className="w-6 h-6" />
+                  </div>
+                )}
+                {!!p.pinned && <span className="absolute top-2 left-2 badge bg-white/90 backdrop-blur text-amber-600 shadow-sm">PINNED</span>}
+                {!p.in_stock && <span className="absolute top-2 right-2 badge bg-slate-900/80 backdrop-blur text-white">OUT OF STOCK</span>}
               </div>
-              <div className={view === 'grid' ? 'p-3' : 'flex-1 min-w-0'}>
-                <h3 className="font-semibold text-sm truncate">{p.name}</h3>
-                <p className="text-xs text-gray-500 truncate">{p.category}</p>
-                <p className="text-sm font-bold">{p.price != null ? `₹${p.price}` : '—'}</p>
-                <div className="mt-1 flex flex-wrap gap-1 text-xs">
-                  <button className="text-blue-600" onClick={() => setEditing(p)}>Edit</button>
-                  <button className="text-gray-500" onClick={() => patch(p.id, { in_stock: !p.in_stock })}>{p.in_stock ? 'Mark out' : 'Mark in'}</button>
-                  <button className="text-gray-500" onClick={() => patch(p.id, { pinned: !p.pinned })}>{p.pinned ? 'Unpin' : 'Pin'}</button>
-                  <button className="text-gray-500" onClick={() => act(p.id, 'POST')}>Duplicate</button>
-                  <button className="text-red-500" onClick={() => confirm(`Delete "${p.name}"?`) && act(p.id, 'DELETE')}>Delete</button>
+              <div className={view === 'grid' ? 'p-3.5' : 'flex-1 min-w-0'}>
+                <h3 className="font-semibold text-sm tracking-tight truncate">{p.name}</h3>
+                <p className="text-xs text-slate-400 truncate">{p.category || '—'}</p>
+                <p className="mt-0.5 text-[15px] font-bold tracking-tight">{p.price != null ? `₹${p.price}` : '—'}</p>
+                <div className="mt-1.5 flex flex-wrap gap-x-2.5 gap-y-1 text-xs font-medium">
+                  <button className="text-slate-600 hover:text-slate-900" onClick={() => setEditing(p)}>Edit</button>
+                  <button className="text-slate-400 hover:text-slate-700" onClick={() => patch(p.id, { in_stock: !p.in_stock })}>{p.in_stock ? 'Mark out' : 'Mark in'}</button>
+                  <button className="text-slate-400 hover:text-slate-700" onClick={() => patch(p.id, { pinned: !p.pinned })}>{p.pinned ? 'Unpin' : 'Pin'}</button>
+                  <button className="text-slate-400 hover:text-slate-700" onClick={() => act(p.id, 'POST')}>Duplicate</button>
+                  <button className="text-red-400 hover:text-red-600" onClick={() => confirm(`Delete "${p.name}"?`) && act(p.id, 'DELETE')}>Delete</button>
                 </div>
               </div>
             </div>
@@ -110,9 +130,9 @@ export default function Products() {
       )}
 
       {editing && (
-        <div className="fixed inset-0 bg-black/40 z-30 flex items-center justify-center p-4" onClick={() => setEditing(null)}>
+        <div className="fixed inset-0 bg-slate-950/50 backdrop-blur-sm z-30 flex items-center justify-center p-4" onClick={() => setEditing(null)}>
           <div className="card w-full max-w-md p-6 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            <h2 className="font-bold mb-4">Edit product</h2>
+            <h2 className="font-bold tracking-tight mb-4">Edit product</h2>
             <ProductForm
               initial={editing}
               onCancel={() => setEditing(null)}

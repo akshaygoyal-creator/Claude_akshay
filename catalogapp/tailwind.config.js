@@ -3,9 +3,12 @@ module.exports = {
   content: ['./app/**/*.{js,jsx}', './lib/**/*.{js,jsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['var(--font-sans)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+      },
       colors: {
-        wa: '#25D366',
-        'wa-dark': '#128C7E',
+        wa: '#10b981',
+        'wa-dark': '#059669',
       },
     },
   },

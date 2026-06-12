@@ -20,7 +20,7 @@ export function getDb() {
       whatsapp TEXT DEFAULT '',
       city TEXT DEFAULT '',
       language TEXT DEFAULT 'en',
-      accent_color TEXT DEFAULT '#25D366',
+      accent_color TEXT DEFAULT '#10b981',
       description TEXT DEFAULT '',
       hours TEXT DEFAULT '',
       show_prices INTEGER DEFAULT 1,

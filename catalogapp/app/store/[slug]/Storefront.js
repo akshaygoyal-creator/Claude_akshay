@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { Clock, ImageIcon, WaGlyph } from '../../../lib/icons';
 
 function track(seller_id, type, product_id) {
   fetch('/api/track', {
@@ -12,14 +13,15 @@ function track(seller_id, type, product_id) {
 
 export default function Storefront({ seller, products }) {
   const [lang, setLang] = useState('en');
-  const [open, setOpen] = useState(null); // product detail view
+  const [open, setOpen] = useState(null);
 
   useEffect(() => {
     track(seller.id, 'store_view');
   }, [seller.id]);
 
-  const accent = seller.accent_color || '#25D366';
+  const accent = seller.accent_color || '#10b981';
   const wa = (seller.whatsapp || '').replace(/[^\d]/g, '');
+  const initial = (seller.business_name || 'S').trim().charAt(0).toUpperCase();
 
   function orderLink(p) {
     const msg =
@@ -30,51 +32,85 @@ export default function Storefront({ seller, products }) {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 pb-24">
-      <header className="text-white" style={{ background: accent }}>
-        <div className="max-w-2xl mx-auto px-4 py-6">
-          <div className="flex items-start justify-between">
-            <div>
-              <h1 className="text-2xl font-extrabold">{seller.business_name}</h1>
-              <p className="text-sm opacity-90">
-                {[seller.category, seller.city].filter(Boolean).join(' · ')}
-              </p>
-              {seller.description && <p className="mt-2 text-sm opacity-90">{seller.description}</p>}
-              {seller.hours && <p className="mt-1 text-xs opacity-75">🕒 {seller.hours}</p>}
+    <main className="min-h-screen bg-[#f6f7f6] pb-28">
+      <header
+        className="text-white relative overflow-hidden"
+        style={{ background: `linear-gradient(160deg, ${accent}, ${accent}dd 60%, ${accent}bb)` }}
+      >
+        <div className="absolute inset-0 bg-[radial-gradient(80%_120%_at_85%_-10%,rgba(255,255,255,0.22),transparent_55%)]" />
+        <div className="relative max-w-2xl mx-auto px-5 pt-7 pb-8">
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex items-start gap-3.5">
+              <span className="w-14 h-14 shrink-0 rounded-2xl bg-white/15 backdrop-blur border border-white/25 flex items-center justify-center text-2xl font-extrabold shadow-[inset_0_1px_0_rgba(255,255,255,0.3)]">
+                {initial}
+              </span>
+              <div>
+                <h1 className="text-[22px] font-extrabold tracking-tight leading-tight">{seller.business_name}</h1>
+                <p className="mt-0.5 text-[13px] font-medium opacity-85">
+                  {[seller.category, seller.city].filter(Boolean).join(' · ')}
+                </p>
+              </div>
             </div>
             <button
-              className="bg-white/20 rounded-full px-3 py-1 text-sm font-semibold"
+              className="shrink-0 rounded-full bg-white/15 backdrop-blur border border-white/25 px-3.5 py-1.5 text-[13px] font-bold shadow-[inset_0_1px_0_rgba(255,255,255,0.25)]"
               onClick={() => setLang(lang === 'en' ? 'hi' : 'en')}
             >
               {lang === 'en' ? 'हिं' : 'EN'}
             </button>
           </div>
+          {seller.description && <p className="mt-4 text-sm opacity-90 leading-relaxed max-w-md">{seller.description}</p>}
+          {seller.hours && (
+            <p className="mt-2 inline-flex items-center gap-1.5 text-xs font-medium opacity-80">
+              <Clock className="w-3.5 h-3.5" />
+              {seller.hours}
+            </p>
+          )}
         </div>
       </header>
 
-      <div className="max-w-2xl mx-auto px-4 py-4 grid grid-cols-2 gap-3">
+      <div className="max-w-2xl mx-auto px-4 -mt-3 relative grid grid-cols-2 gap-3.5">
         {products.map((p) => (
-          <button key={p.id} className="card overflow-hidden text-left" onClick={() => { setOpen(p); track(seller.id, 'product_view', p.id); }}>
-            <div className="aspect-square bg-gray-100 relative">
+          <button
+            key={p.id}
+            className="card overflow-hidden text-left hover:-translate-y-0.5 hover:shadow-[0_2px_4px_rgba(15,23,42,0.06),0_20px_44px_-18px_rgba(15,23,42,0.20)] transition-all duration-200"
+            onClick={() => {
+              setOpen(p);
+              track(seller.id, 'product_view', p.id);
+            }}
+          >
+            <div className="aspect-square bg-slate-100 relative">
               {p.image ? (
-                <img src={p.image} alt={p.name} className={`w-full h-full object-cover ${!p.in_stock ? 'grayscale opacity-60' : ''}`} loading="lazy" />
+                <img
+                  src={p.image}
+                  alt={p.name}
+                  className={`w-full h-full object-cover ${!p.in_stock ? 'grayscale opacity-60' : ''}`}
+                  loading="lazy"
+                />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-3xl">🛍️</div>
+                <div className="w-full h-full flex items-center justify-center text-slate-300">
+                  <ImageIcon className="w-7 h-7" />
+                </div>
               )}
               {!p.in_stock && (
-                <span className="absolute top-2 right-2 badge bg-gray-700 text-white">
-                  {lang === 'hi' ? 'स्टॉक खत्म' : 'Out of stock'}
+                <span className="absolute top-2 right-2 badge bg-slate-900/75 backdrop-blur text-white">
+                  {lang === 'hi' ? 'स्टॉक खत्म' : 'OUT OF STOCK'}
                 </span>
               )}
             </div>
-            <div className="p-3">
-              <h3 className="font-semibold text-sm leading-tight">{p.name}</h3>
-              {seller.show_prices && p.price != null ? <p className="mt-1 font-bold" style={{ color: accent }}>₹{p.price}</p> : null}
+            <div className="p-3.5">
+              <h3 className="font-semibold text-[13.5px] tracking-tight leading-snug">{p.name}</h3>
+              {seller.show_prices && p.price != null ? (
+                <p className="mt-1 font-extrabold tracking-tight" style={{ color: accent }}>
+                  ₹{p.price}
+                </p>
+              ) : null}
             </div>
           </button>
         ))}
         {products.length === 0 && (
-          <p className="col-span-2 text-center text-gray-400 py-16">{lang === 'hi' ? 'अभी कोई उत्पाद नहीं' : 'No products yet'}</p>
+          <p className="col-span-2 text-center text-slate-400 py-20 text-sm">
+            {lang === 'hi' ? 'अभी कोई उत्पाद नहीं' : 'No products yet'}
+          </p>
         )}
       </div>
 
@@ -83,40 +119,58 @@ export default function Storefront({ seller, products }) {
           href={`https://wa.me/${wa}`}
           target="_blank"
           onClick={() => track(seller.id, 'whatsapp_tap')}
-          className="fixed bottom-4 right-4 btn text-white shadow-lg"
-          style={{ background: accent }}
+          className="fixed bottom-5 right-5 btn text-white shadow-[0_8px_24px_-6px_rgba(0,0,0,0.35)]"
+          style={{ background: `linear-gradient(to bottom, ${accent}, ${accent}dd)` }}
         >
-          💬 {lang === 'hi' ? 'WhatsApp पर संपर्क करें' : 'Chat on WhatsApp'}
+          <WaGlyph className="w-[18px] h-[18px]" />
+          {lang === 'hi' ? 'WhatsApp पर संपर्क करें' : 'Chat on WhatsApp'}
         </a>
       )}
 
       {open && (
-        <div className="fixed inset-0 z-30 bg-black/60 flex items-end sm:items-center justify-center" onClick={() => setOpen(null)}>
-          <div className="bg-white w-full sm:max-w-md sm:rounded-2xl rounded-t-2xl max-h-[92vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            {open.image && <img src={open.image} alt={open.name} className="w-full aspect-square object-cover" />}
-            <div className="p-5">
+        <div
+          className="fixed inset-0 z-30 bg-slate-950/60 backdrop-blur-sm flex items-end sm:items-center justify-center"
+          onClick={() => setOpen(null)}
+        >
+          <div
+            className="bg-white w-full sm:max-w-md sm:rounded-3xl rounded-t-3xl max-h-[92vh] overflow-y-auto shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="sm:hidden pt-2.5 flex justify-center">
+              <span className="w-10 h-1 rounded-full bg-slate-200" />
+            </div>
+            {open.image && <img src={open.image} alt={open.name} className="w-full aspect-square object-cover mt-2 sm:mt-0" />}
+            <div className="p-6">
               <div className="flex items-start justify-between gap-3">
-                <h2 className="text-lg font-bold">{open.name}</h2>
-                <button className="text-gray-400 text-xl leading-none" onClick={() => setOpen(null)}>✕</button>
+                <h2 className="text-lg font-extrabold tracking-tight leading-snug">{open.name}</h2>
+                <button
+                  className="shrink-0 w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 text-sm font-semibold"
+                  onClick={() => setOpen(null)}
+                >
+                  ✕
+                </button>
               </div>
               {seller.show_prices && open.price != null ? (
-                <p className="mt-1 text-xl font-extrabold" style={{ color: accent }}>₹{open.price}</p>
+                <p className="mt-1.5 text-[22px] font-extrabold tracking-tight" style={{ color: accent }}>
+                  ₹{open.price}
+                </p>
               ) : null}
-              <p className="mt-3 text-sm text-gray-700 whitespace-pre-wrap">
+              <p className="mt-3 text-sm text-slate-600 leading-relaxed whitespace-pre-wrap">
                 {(lang === 'hi' ? open.description_hi : open.description_en) || ''}
               </p>
               {!open.in_stock ? (
-                <p className="mt-4 badge bg-gray-200 text-gray-600">{lang === 'hi' ? 'स्टॉक खत्म' : 'Out of stock'}</p>
+                <p className="mt-5 badge bg-slate-100 text-slate-500">{lang === 'hi' ? 'स्टॉक खत्म' : 'OUT OF STOCK'}</p>
               ) : (
                 wa && (
                   <a
                     href={orderLink(open)}
                     target="_blank"
                     onClick={() => track(seller.id, 'whatsapp_tap', open.id)}
-                    className="btn w-full mt-4 text-white"
-                    style={{ background: accent }}
+                    className="btn w-full mt-5 !py-3 text-white shadow-[0_6px_20px_-6px_rgba(0,0,0,0.3)]"
+                    style={{ background: `linear-gradient(to bottom, ${accent}, ${accent}dd)` }}
                   >
-                    💬 {lang === 'hi' ? 'WhatsApp पर ऑर्डर करें' : 'Order on WhatsApp'}
+                    <WaGlyph className="w-[18px] h-[18px]" />
+                    {lang === 'hi' ? 'WhatsApp पर ऑर्डर करें' : 'Order on WhatsApp'}
                   </a>
                 )
               )}

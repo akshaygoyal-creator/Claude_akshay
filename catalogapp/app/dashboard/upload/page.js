@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import ProductForm from '../ProductForm';
+import { Camera, Pen, FileText, Sparkles, Check } from '../../../lib/icons';
 
 const MAX_FILES = 20;
 const MAX_SIZE = 10 * 1024 * 1024;
@@ -29,7 +30,7 @@ function toDataUrl(file) {
 export default function Upload() {
   const router = useRouter();
   const [tab, setTab] = useState('photos'); // photos | manual | csv
-  const [cards, setCards] = useState([]); // {id, image, status: extracting|ready|saved|error, fields, error}
+  const [cards, setCards] = useState([]);
   const [message, setMessage] = useState('');
   const fileRef = useRef();
   const csvRef = useRef();
@@ -131,22 +132,35 @@ export default function Upload() {
     setMessage(`Imported ${ok} products from CSV`);
   }
 
+  const TABS = [
+    ['photos', 'Upload Photos', Camera],
+    ['manual', 'Manual Entry', Pen],
+    ['csv', 'CSV Import', FileText],
+  ];
+
   return (
     <div>
-      <div className="flex gap-2">
-        {[['photos', '📸 Upload Photos'], ['manual', '✍️ Manual Entry'], ['csv', '📄 CSV Import']].map(([v, label]) => (
-          <button key={v} onClick={() => setTab(v)} className={tab === v ? 'btn-primary' : 'btn-secondary'}>
+      <div className="inline-flex gap-1 p-1 bg-slate-100 rounded-full">
+        {TABS.map(([v, label, Ico]) => (
+          <button
+            key={v}
+            onClick={() => setTab(v)}
+            className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-[13px] font-semibold transition ${
+              tab === v ? 'bg-white shadow-sm text-slate-900' : 'text-slate-500 hover:text-slate-800'
+            }`}
+          >
+            <Ico className="w-3.5 h-3.5" />
             {label}
           </button>
         ))}
       </div>
 
-      {message && <p className="mt-3 text-sm text-amber-700 bg-amber-50 rounded p-2">{message}</p>}
+      {message && <p className="mt-4 text-sm text-amber-700 bg-amber-50 border border-amber-100 rounded-xl p-2.5">{message}</p>}
 
       {tab === 'photos' && (
-        <div className="mt-4">
+        <div className="mt-5">
           <div
-            className="card border-2 border-dashed border-gray-300 p-10 text-center cursor-pointer hover:border-wa"
+            className="card border-2 border-dashed !border-slate-300 !shadow-none p-12 text-center cursor-pointer transition hover:!border-emerald-400 hover:bg-emerald-50/30"
             onClick={() => fileRef.current.click()}
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => {
@@ -154,32 +168,50 @@ export default function Upload() {
               handleFiles(e.dataTransfer.files);
             }}
           >
-            <p className="text-3xl">📸</p>
-            <p className="mt-2 font-semibold">Drag & drop or tap to select photos</p>
-            <p className="text-xs text-gray-500 mt-1">Up to 20 photos · JPG, PNG, WEBP, HEIC · max 10MB each. AI fills in the details.</p>
+            <span className="icon-chip !w-12 !h-12 mx-auto">
+              <Camera className="w-5 h-5" />
+            </span>
+            <p className="mt-4 font-bold tracking-tight">Drag &amp; drop or tap to select photos</p>
+            <p className="mt-1 text-xs text-slate-400">
+              Up to 20 photos · JPG, PNG, WEBP, HEIC · max 10MB each — AI fills in the details
+            </p>
             <input ref={fileRef} type="file" accept="image/*" multiple hidden onChange={(e) => handleFiles(e.target.files)} />
           </div>
 
-          <div className="mt-4 grid sm:grid-cols-2 gap-4">
+          <div className="mt-5 grid sm:grid-cols-2 gap-4">
             {cards.map((card) => (
-              <div key={card.id} className="card p-4">
+              <div key={card.id} className="card p-5">
                 {card.status === 'extracting' && (
-                  <div className="flex items-center gap-3">
-                    <img src={card.image} alt="" className="w-16 h-16 object-cover rounded-lg" />
-                    <p className="text-sm text-gray-500 animate-pulse">🤖 AI is reading this photo…</p>
+                  <div className="flex items-center gap-4">
+                    <img src={card.image} alt="" className="w-16 h-16 object-cover rounded-xl" />
+                    <div className="flex-1">
+                      <p className="flex items-center gap-1.5 text-sm font-semibold text-slate-700">
+                        <Sparkles className="w-4 h-4 text-emerald-500" />
+                        AI is reading this photo…
+                      </p>
+                      <div className="mt-2 space-y-1.5">
+                        <div className="shimmer h-2.5 rounded-full w-3/4" />
+                        <div className="shimmer h-2.5 rounded-full w-1/2" />
+                      </div>
+                    </div>
                   </div>
                 )}
                 {card.status === 'ready' && (
                   <>
-                    {card.error && <p className="text-xs text-red-600 mb-2">AI failed ({card.error}) — fill in manually</p>}
-                    {card.demo && <p className="text-xs text-amber-600 mb-2">Demo mode (no ANTHROPIC_API_KEY set) — fill in manually</p>}
+                    {card.error && <p className="text-xs text-red-600 mb-3">AI failed ({card.error}) — fill in manually</p>}
+                    {card.demo && (
+                      <p className="badge bg-amber-50 text-amber-700 mb-3">DEMO MODE — NO API KEY, FILL IN MANUALLY</p>
+                    )}
                     <ProductForm initial={{ ...card.fields, image: card.image }} saveLabel="Save product" onSave={(body) => saveCard(card, body)} />
                   </>
                 )}
                 {card.status === 'saved' && (
-                  <div className="flex items-center gap-3">
-                    <img src={card.image} alt="" className="w-16 h-16 object-cover rounded-lg" />
-                    <p className="text-sm text-green-600 font-semibold">✓ Saved to catalog</p>
+                  <div className="flex items-center gap-4">
+                    <img src={card.image} alt="" className="w-16 h-16 object-cover rounded-xl" />
+                    <p className="flex items-center gap-1.5 text-sm font-semibold text-emerald-600">
+                      <Check className="w-4 h-4" />
+                      Saved to catalog
+                    </p>
                   </div>
                 )}
               </div>
@@ -187,7 +219,7 @@ export default function Upload() {
           </div>
 
           {cards.length > 0 && cards.every((c) => c.status === 'saved') && (
-            <button className="btn-primary mt-4" onClick={() => router.push('/dashboard')}>
+            <button className="btn-primary mt-5" onClick={() => router.push('/dashboard')}>
               Done — view catalog
             </button>
           )}
@@ -195,7 +227,7 @@ export default function Upload() {
       )}
 
       {tab === 'manual' && (
-        <div className="card mt-4 p-6 max-w-lg">
+        <div className="card mt-5 p-6 max-w-lg">
           <ProductForm
             saveLabel="Add product"
             onSave={async (body) => {
@@ -208,11 +240,12 @@ export default function Upload() {
       )}
 
       {tab === 'csv' && (
-        <div className="card mt-4 p-6 max-w-lg">
-          <p className="text-sm text-gray-600">
-            Upload a CSV with header columns: <code className="bg-gray-100 px-1 rounded">name, price, description, category, image url</code>
+        <div className="card mt-5 p-6 max-w-lg">
+          <p className="text-sm text-slate-500">
+            Upload a CSV with header columns:{' '}
+            <code className="bg-slate-100 px-1.5 py-0.5 rounded-md text-xs text-slate-700">name, price, description, category, image url</code>
           </p>
-          <input ref={csvRef} type="file" accept=".csv" className="mt-3" onChange={(e) => e.target.files[0] && importCsv(e.target.files[0])} />
+          <input ref={csvRef} type="file" accept=".csv" className="mt-4 text-sm" onChange={(e) => e.target.files[0] && importCsv(e.target.files[0])} />
         </div>
       )}
     </div>

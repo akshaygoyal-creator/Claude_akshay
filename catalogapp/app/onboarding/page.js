@@ -2,12 +2,14 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { LogoMark } from '../../lib/icons';
 
 const CATEGORIES = ['Kirana / General Store', 'Home Food / Tiffin', 'Bakery', 'Boutique / Fashion', 'Electronics', 'Handicrafts / Artisan', 'Jewelry', 'Other'];
+const STEPS = ['phone', 'otp', 'profile'];
 
 export default function Onboarding() {
   const router = useRouter();
-  const [step, setStep] = useState('phone'); // phone | otp | profile
+  const [step, setStep] = useState('phone');
   const [phone, setPhone] = useState('');
   const [code, setCode] = useState('');
   const [hint, setHint] = useState('');
@@ -57,42 +59,59 @@ export default function Onboarding() {
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center px-4">
+    <main className="min-h-screen flex items-center justify-center px-4 bg-[radial-gradient(60%_50%_at_50%_0%,rgba(16,185,129,0.08),transparent_70%)]">
       <div className="card w-full max-w-md p-8">
-        <h1 className="text-2xl font-bold text-center">📦 CatalogApp</h1>
+        <div className="flex flex-col items-center">
+          <LogoMark className="w-12 h-12" />
+          <h1 className="mt-3 text-xl font-extrabold tracking-tight">CatalogApp</h1>
+          <div className="mt-4 flex gap-1.5">
+            {STEPS.map((s) => (
+              <span
+                key={s}
+                className={`h-1.5 rounded-full transition-all ${s === step ? 'w-6 bg-emerald-500' : 'w-1.5 bg-slate-200'}`}
+              />
+            ))}
+          </div>
+        </div>
 
         {step === 'phone' && (
-          <form onSubmit={sendOtp} className="mt-6 space-y-4">
-            <label className="block text-sm font-medium">
+          <form onSubmit={sendOtp} className="mt-7 space-y-4">
+            <label className="label">
               WhatsApp / Phone number
-              <input className="input mt-1" placeholder="+91 98765 43210" value={phone} onChange={(e) => setPhone(e.target.value)} required />
+              <input className="input mt-1.5" placeholder="+91 98765 43210" value={phone} onChange={(e) => setPhone(e.target.value)} required />
             </label>
             <button className="btn-primary w-full" disabled={busy}>{busy ? 'Sending…' : 'Send OTP'}</button>
           </form>
         )}
 
         {step === 'otp' && (
-          <form onSubmit={verify} className="mt-6 space-y-4">
-            <p className="text-sm text-gray-600">Enter the 6-digit OTP sent to {phone}</p>
-            {hint && <p className="text-xs text-amber-600 bg-amber-50 rounded p-2">{hint}</p>}
-            <input className="input text-center tracking-[0.5em] text-lg" maxLength={6} value={code} onChange={(e) => setCode(e.target.value)} required />
+          <form onSubmit={verify} className="mt-7 space-y-4">
+            <p className="text-sm text-slate-500 text-center">Enter the 6-digit OTP sent to <b className="text-slate-700">{phone}</b></p>
+            {hint && <p className="text-xs text-amber-700 bg-amber-50 border border-amber-100 rounded-xl p-2.5 text-center">{hint}</p>}
+            <input className="input text-center tracking-[0.5em] text-lg font-bold" maxLength={6} value={code} onChange={(e) => setCode(e.target.value)} required />
             <button className="btn-primary w-full" disabled={busy}>{busy ? 'Verifying…' : 'Verify & Continue'}</button>
           </form>
         )}
 
         {step === 'profile' && (
-          <form onSubmit={saveProfile} className="mt-6 space-y-4">
-            <p className="text-sm text-gray-600">Tell us about your business</p>
+          <form onSubmit={saveProfile} className="mt-7 space-y-3.5">
+            <p className="text-sm text-slate-500 text-center">Tell us about your business</p>
             <input className="input" placeholder="Business name *" value={profile.business_name} onChange={(e) => setProfile({ ...profile, business_name: e.target.value })} required />
             <select className="input" value={profile.category} onChange={(e) => setProfile({ ...profile, category: e.target.value })}>
               {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
             </select>
             <input className="input" placeholder="WhatsApp number for orders *" value={profile.whatsapp} onChange={(e) => setProfile({ ...profile, whatsapp: e.target.value })} required />
             <input className="input" placeholder="City" value={profile.city} onChange={(e) => setProfile({ ...profile, city: e.target.value })} />
-            <div className="flex gap-2">
+            <div className="flex gap-2 p-1 bg-slate-100 rounded-full">
               {[['en', 'English'], ['hi', 'हिन्दी']].map(([v, label]) => (
-                <button type="button" key={v} onClick={() => setProfile({ ...profile, language: v })}
-                  className={profile.language === v ? 'btn-primary flex-1' : 'btn-secondary flex-1'}>
+                <button
+                  type="button"
+                  key={v}
+                  onClick={() => setProfile({ ...profile, language: v })}
+                  className={`flex-1 rounded-full py-2 text-sm font-semibold transition ${
+                    profile.language === v ? 'bg-white shadow-sm text-slate-900' : 'text-slate-500'
+                  }`}
+                >
                   {label}
                 </button>
               ))}
