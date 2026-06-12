@@ -1,0 +1,15 @@
+{
+  "appId": "in.catalogapp.seller",
+  "appName": "CatalogApp",
+  "webDir": "public",
+  "server": {
+    "url": "https://catalogapp.in",
+    "cleartext": false
+  },
+  "ios": {
+    "contentInset": "automatic"
+  },
+  "android": {
+    "allowMixedContent": false
+  }
+}
