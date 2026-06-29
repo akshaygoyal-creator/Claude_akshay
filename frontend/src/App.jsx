@@ -4,11 +4,13 @@ import EmployeePage from './pages/EmployeePage';
 import ManagerDashboardPage from './pages/ManagerDashboardPage';
 import OpsDashboardPage from './pages/OpsDashboardPage';
 import LandingPage from './pages/LandingPage';
+import AIProductCoach from './coach/AIProductCoach';
 
 export default function App() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Routes>
+        <Route path="/coach" element={<AIProductCoach />} />
         <Route path="/" element={<LandingPage />} />
         <Route path="/employee/*" element={<EmployeePage />} />
         <Route path="/manager/*" element={<ManagerDashboardPage />} />
